@@ -85,9 +85,11 @@ pip install ktransformers flashinfer_python --no-index --find-links=./dist
 尝试解决：
 方案1: set(CMAKE_CXX_STANDARD 17) 加在了scrs.balance_serve里，但是源码里直接用了std::counting_semaphore，那是20才支持的 
 
+我刚才升级了gcc到12，会解决这个问题吗？——不行。 
+
 后来发现 看错 了，注意区分set(CMAKE_CUDA_STANDARD 17) 和  set(CMAKE_CXX_STANDARD 17) 我一开始通过不了是因为设置了后者，但是实际上要求cxx standard 20但是 要把 cuda standard设为17
 
-我刚才升级了gcc到12，会解决这个问题吗？——不行。 顺便提一下，有时候deepseek-r1的回答真的会好非常多，一下就把问题解决了！
+
 
 直接测试命令：
 cmake /root/ktransformers/csrc/balance_serve \
@@ -119,4 +121,4 @@ model path小文件指令本地的，并且取名要严格按照仓库名/后的
 如果再不行的话，说是要指定cuda_home和cuda archlist。
 export TORCH_CUDA_ARCH_LIST="8.9" # 8.9 for 4090
 ```
-![[Pasted image 20250424151652.png]]
+<img src="./assets/Pasted image 20250424151652.png">
