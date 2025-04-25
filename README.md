@@ -1,3 +1,47 @@
+# ktransformers0.2.4post1 whl使用方法
+
+
+前置：安装conda, 支持avx2指令集，支持cuda12.4 runtime（驱动版本cuda在12.4及以上）。
+要求显卡计算能力在8.0;8.6;8.7;8.9;9.0中
+
+```bash
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+conda config --set show_channel_urls yes
+conda create -n kt python=3.11 -y
+conda activate kt
+sudo apt-get update -y
+sudo apt-get install build-essential cmake ninja-build patchelf -y
+sudo apt-get install --only-upgrade libstdc++6 -y
+conda install -c conda-forge libstdcxx-ng -y
+strings ~/miniconda3/envs/kt/lib/libstdc++.so.6 | grep GLIBCXX_3.4.32 # 确保有GLIBCXX_3.4.32输出!
+pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+pip install openai zmq 
+pip install torch==2.4.0 --index-url https://download.pytorch.org/whl/cu124
+pip install https://github.com/Dao-AILab/flash-attention/releases/download/v2.7.4.post1/flash_attn-2.7.4.post1+cu12torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
+pip install https://github.com/Anionex/ktransformers-0.2.4/releases/download/0.2.4post1/ktransformers-0.2.4.post1+cu124torch24avx2-cp311-cp311-linux_x86_64.whl
+pip install https://github.com/Anionex/ktransformers-0.2.4/releases/download/0.2.4post1/flashinfer_python-0.2.3-py3-none-any.whl
+wget https://github.com/Anionex/ktransformers-0.2.4/releases/download/0.2.4post1/kt_libs.zip -O ~/kt_libs.zip
+cd ~
+unzip kt_libs.zip
+KT_LIB_DIR="~/.ktransformers_libs"
+mkdir -p $KT_LIB_DIR
+cp ~/kt_libs/*.so* $KT_LIB_DIR
+export LD_LIBRARY_PATH=$KT_LIB_DIR:$LD_LIBRARY_PATH
+```
+
+启动：
+```bash
+conda activate kt
+KT_LIB_DIR="~/.ktransformers_libs"
+export LD_LIBRARY_PATH=$KT_LIB_DIR:$LD_LIBRARY_PATH
+export TORCH_CUDA_ARCH_LIST=8.9 # 4090 的是8.9，其他卡需要自己更换!
+export CUDA_HOME=/usr/local/cuda-12.4 # 需要提前安装cuda-12.4 的toolkit！
+# ... 你的后续启动命令
+```
+
+
+
 # ktransformers0.2.4post1构建记录
 
 需修改install.sh内容
