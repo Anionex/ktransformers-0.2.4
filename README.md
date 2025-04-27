@@ -21,6 +21,19 @@ pip install torch==2.4.0 --index-url https://download.pytorch.org/whl/cu124
 pip install https://github.com/Dao-AILab/flash-attention/releases/download/v2.7.4.post1/flash_attn-2.7.4.post1+cu12torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
 pip install https://github.com/Anionex/ktransformers-0.2.4/releases/download/0.2.4post1/ktransformers-0.2.4.post1+cu124torch24avx2-cp311-cp311-linux_x86_64.whl
 pip install https://github.com/Anionex/ktransformers-0.2.4/releases/download/0.2.4post1/flashinfer_python-0.2.3-py3-none-any.whl
+
+
+```
+
+启动：
+```bash
+conda activate kt
+export TORCH_CUDA_ARCH_LIST=8.9 # 4090 的是8.9，其他卡需要自己更换!
+export CUDA_HOME=/usr/local/cuda-12.4 # 需要提前安装cuda-12.4 的toolkit！
+# ... 你的后续启动命令
+
+
+## 如果运行提示找不到so文件，先执行以下命令
 wget https://github.com/Anionex/ktransformers-0.2.4/releases/download/0.2.4post1/kt_libs.zip -O ~/kt_libs.zip
 cd ~
 unzip kt_libs.zip
@@ -28,15 +41,8 @@ KT_LIB_DIR="~/.ktransformers_libs"
 mkdir -p $KT_LIB_DIR
 cp ~/kt_libs/*.so* $KT_LIB_DIR
 export LD_LIBRARY_PATH=$KT_LIB_DIR:$LD_LIBRARY_PATH
-```
-
-启动：
-```bash
-conda activate kt
 KT_LIB_DIR="~/.ktransformers_libs"
 export LD_LIBRARY_PATH=$KT_LIB_DIR:$LD_LIBRARY_PATH
-export TORCH_CUDA_ARCH_LIST=8.9 # 4090 的是8.9，其他卡需要自己更换!
-export CUDA_HOME=/usr/local/cuda-12.4 # 需要提前安装cuda-12.4 的toolkit！
 # ... 你的后续启动命令
 ```
 
